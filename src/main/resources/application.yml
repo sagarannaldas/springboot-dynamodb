@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: springboot-dynamodb
+aws:
+ dynamodb:
+  region: us-east-1
+  sessionToken: abc
+ credentials:
+  access-key: ${ACCESS_KEY}
+  secret-key: ${SECRET_KEY}
+ endpoint: dynamodb.us-east-1.amazonaws.com
