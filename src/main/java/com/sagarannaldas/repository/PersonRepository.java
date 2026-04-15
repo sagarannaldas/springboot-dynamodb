@@ -18,23 +18,31 @@ public class PersonRepository {
 	@Autowired
 	private DynamoDBMapper dynamoDBMapper;
 
-	public Person addPerson(Person person) {
+	public String addPerson(Person person) {
 		dynamoDBMapper.save(person);
-		return person;
+		return person.getPersonId();
 	}
 
 	public Person findPersonById(String personId) {
 		return dynamoDBMapper.load(Person.class, personId);
 	}
 
-	public String deletePerson(Person person) {
+	public String deletePerson(String personId) {
+		Person person = dynamoDBMapper.load(Person.class, personId);
 		dynamoDBMapper.delete(person);
-		return "person removed";
+		return person.getPersonId() + " get deleted !";
 	}
 
-	public String updatePerson(Person person) {
-		dynamoDBMapper.save(person, buildExpression(person));
-		return "record updated";
+	public Person updatePerson(String personId, Person newPerson) {
+		Person person = dynamoDBMapper.load(Person.class, personId);
+		person.setName(newPerson.getName());
+		person.setAge(newPerson.getAge());
+		person.setEmail(newPerson.getEmail());
+		person.setAddress(newPerson.getAddress());
+		dynamoDBMapper.save(person);
+
+//		dynamoDBMapper.save(person, buildExpression(person));
+		return dynamoDBMapper.load(Person.class, personId);
 	}
 
 	private DynamoDBSaveExpression buildExpression(Person person) {

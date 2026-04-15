@@ -19,7 +19,7 @@ public class DynamoDBController {
 	private PersonRepository personRepository;
 
 	@PostMapping("/save-person")
-	public Person savePerson(@RequestBody Person person) {
+	public String savePerson(@RequestBody Person person) {
 		return personRepository.addPerson(person);
 	}
 
@@ -28,13 +28,13 @@ public class DynamoDBController {
 		return personRepository.findPersonById(personId);
 	}
 
-	@DeleteMapping("/delete-person")
-	public String deletePerson(@RequestBody Person person) {
-		return personRepository.deletePerson(person);
+	@DeleteMapping("/delete-person/{personId}")
+	public String deletePerson(@PathVariable String personId) {
+		return personRepository.deletePerson(personId);
 	}
 
-	@PutMapping("/update-person")
-	public String updatePerson(@RequestBody Person person) {
-		return personRepository.updatePerson(person);
+	@PutMapping("/update-person/{personId}")
+	public Person updatePerson(@RequestBody Person person, @PathVariable String personId) {
+		return personRepository.updatePerson(personId, person);
 	}
 }
